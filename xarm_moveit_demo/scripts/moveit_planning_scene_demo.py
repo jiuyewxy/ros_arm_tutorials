@@ -76,23 +76,18 @@ class MoveItObstaclesDemo:
         else:
             rospy.loginfo("Failed to add the Box")
 
-        # 将一个圆柱体添加到规划场景中
-        cylinder_object = CollisionObject()
-        cylinder_object.header.frame_id = "base_link"
-        cylinder_object.id = "cylinder"
-        cylinder_primitive = SolidPrimitive()
-        cylinder_primitive.type = cylinder_primitive.CYLINDER
-        cylinder_primitive.dimensions = [0.12, 0.015]
-        cylinder_pose = Pose()
-        cylinder_pose.position.x = 0.4
-        cylinder_pose.position.y = 0
-        cylinder_pose.position.z = cylinder_primitive.dimensions[0]/2.0 + box_size[2]/2 + 0.37
-        cylinder_pose.orientation.w = 1.0
-        cylinder_object.primitives =[cylinder_primitive]
-        cylinder_object.primitive_poses =[cylinder_pose]
-        cylinder_object.operation = cylinder_object.ADD
-        scene.add_object(cylinder_object)
-        if self.wait_for_state_update(cylinder_object.id,scene,obstacle_is_known=True):
+
+        box2_id = 'box2'
+        box2_size = [0.03, 0.03, 0.12]
+        box2_pose = PoseStamped()
+        box2_pose.header.frame_id = 'base_link'
+        box2_pose.pose.position.x = 0.4
+        box2_pose.pose.position.y = 0
+        box2_pose.pose.position.z = 0.12/2 + box_size[2]/2 + 0.37
+        box2_pose.pose.orientation.w = 1.0
+        # 调用add_box()函数将box添加到规划场景中
+        scene.add_box(box2_id, box2_pose, box2_size)
+        if self.wait_for_state_update('box2',scene,obstacle_is_known=True):
             rospy.loginfo("The Cylinder has been successfully added.")
         else:
             rospy.loginfo("Failed to add the Cylinder.")
@@ -111,7 +106,7 @@ class MoveItObstaclesDemo:
         target_pose.header.stamp = rospy.Time.now()
         target_pose.pose.position.x = 0.41
         target_pose.pose.position.y = 0
-        target_pose.pose.position.z = cylinder_primitive.dimensions[0]/2.0 + box_size[2]/2 + 0.37
+        target_pose.pose.position.z = 0.12/2.0 + box_size[2]/2 + 0.37
         target_pose.pose.orientation.w = 1
         arm.set_start_state_to_current_state()
         # 设置目标target_pose并让机械臂运动到此目标
@@ -130,10 +125,12 @@ class MoveItObstaclesDemo:
         # 使用attach_object()函数把cylinder附着到机械臂末端执行器上
         attach_object = AttachedCollisionObject()
         attach_object.link_name = "gripper_centor_link"
-        attach_object.object = cylinder_object
-        scene.attach_object(attach_object)
+#        attach_object.object = cylinder_object
+        #scene.attach_object(attach_object)
+        # 把tool附着到机械臂末端执行器上
+        scene.attach_box("gripper_centor_link", box2_id, box2_pose, box2_size)
         # 判断cylinder是否附着成功
-        if self.wait_for_state_update(cylinder_object.id,scene,object_is_attached=True):
+        if self.wait_for_state_update(box2_id,scene,object_is_attached=True):
             rospy.loginfo("The cylinder has been successfully attached.")
         else:
             rospy.loginfo("Failed to attach the cylinder.")
@@ -150,7 +147,7 @@ class MoveItObstaclesDemo:
         raw_input()
 
         # 使用remove_attached_object()函数将cylinde从机械臂上分离
-        scene.remove_attached_object("gripper_centor_link", cylinder_object.id)
+        scene.remove_attached_object("gripper_centor_link", box2_id)
 
         rospy.sleep(1)
 
@@ -160,7 +157,7 @@ class MoveItObstaclesDemo:
         # 从规划场景里移除桌面、长方体和圆柱体
         scene.remove_world_object(table_id)
         scene.remove_world_object(box_id)
-        scene.remove_world_object(cylinder_object.id)
+        scene.remove_world_object(box2_id)
         rospy.sleep(1)
 
         print " "

@@ -45,7 +45,7 @@ class MoveItPickPlaceDemo:
         # 设置抓取列表
         grasps = self.make_grasps();
         # 设置result标记每次抓取尝试的结果
-        max_pick_attempts = 5
+        max_pick_attempts = 7
         result = None
         n_attempts = 0
         rospy.loginfo("Try to pick up the box. ")
@@ -73,7 +73,7 @@ class MoveItPickPlaceDemo:
         if result == MoveItErrorCodes.SUCCESS:
             rospy.loginfo("Picked up successfully. Try to place the box. ")
             # 定义放置操作的最大尝试次数
-            max_place_attempts = 5
+            max_place_attempts = 7
             # 重置标记操作结果的result和尝试次数
             result = None
             n_attempts = 0

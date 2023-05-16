@@ -48,7 +48,9 @@ int main(int argc, char **argv){
   ROS_INFO_NAMED("moveit_beeline_demo", "Visualizing plan (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
   // 如果路径规划成功（覆盖率100%）,则开始控制机械臂运动
   if(fraction == 1.0){
-    arm.execute(trajectory);
+    moveit::planning_interface::MoveGroupInterface::Plan plan;
+    plan.trajectory_ = trajectory;
+    arm.execute(plan);
   }
   ROS_INFO("Moving to pose: Home");
   arm.setNamedTarget("Home");
