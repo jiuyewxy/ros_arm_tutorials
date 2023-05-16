@@ -39,8 +39,8 @@ class MoveItObstaclesDemo:
         arm.set_named_target('Home')
         arm.go()
 
-        print "============ Press `Enter` to add objects to the planning scene ..."
-        raw_input()
+        print("============ Press `Enter` to add objects to the planning scene ...")
+        input()
         # 将桌子(长方体桌面)添加到规划场景中
         table_id = 'table'
         table_size = [1.0, 1.2, 0.01]
@@ -97,9 +97,9 @@ class MoveItObstaclesDemo:
         else:
             rospy.loginfo("Failed to add the Cylinder.")
 
-        print " "
-        print "============ Press `Enter` to open gripper, move the arm and close gripper..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to open gripper, move the arm and close gripper...")
+        input()
         # 手爪张开
         joint_positions = [0.65, 0.65]
         gripper.set_joint_value_target(joint_positions)
@@ -124,9 +124,9 @@ class MoveItObstaclesDemo:
         gripper.go()
         rospy.sleep(1)
 
-        print " "
-        print "============ Press `Enter` to attach the Cylinder to the XBot-Arm robot ..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to attach the Cylinder to the XBot-Arm robot ...")
+        input()
         # 使用attach_object()函数把cylinder附着到机械臂末端执行器上
         attach_object = AttachedCollisionObject()
         attach_object.link_name = "gripper_centor_link"
@@ -138,34 +138,34 @@ class MoveItObstaclesDemo:
         else:
             rospy.loginfo("Failed to attach the cylinder.")
 
-        print " "
-        print "============ Press `Enter` to move the arm to a position 25 cm down  ..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to move the arm to a position 25 cm down  ...")
+        input()
         arm.shift_pose_target(2,-0.25, "gripper_centor_link")
         arm.go()
         rospy.sleep(1)
 
-        print " "
-        print "============ Press `Enter` to detach the Cylinder from the XBot-Arm robot ..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to detach the Cylinder from the XBot-Arm robot ...")
+        input()
 
         # 使用remove_attached_object()函数将cylinde从机械臂上分离
         scene.remove_attached_object("gripper_centor_link", cylinder_object.id)
 
         rospy.sleep(1)
 
-        print " "
-        print "============ Press `Enter` to remove the obstacles ..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to remove the obstacles ...")
+        input()
         # 从规划场景里移除桌面、长方体和圆柱体
         scene.remove_world_object(table_id)
         scene.remove_world_object(box_id)
         scene.remove_world_object(cylinder_object.id)
         rospy.sleep(1)
 
-        print " "
-        print "============ Press `Enter` to move to Home and exit the program ..."
-        raw_input()
+        print(" ")
+        print("============ Press `Enter` to move to Home and exit the program ...")
+        input()
         arm.set_named_target('Home')
         arm.go()
         rospy.sleep(1)

@@ -87,8 +87,6 @@ class ColorDetectionDemo():
         cv2.waitKey(3)
 
         # 对二值图像进行轮廓检测并绘制轮廓
-        #不同版本opencv，findContours函数返回的参数个数不同
-        #_, contours, hierarchy = cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         contours, hierarchy = cv2.findContours(mask,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(cv_image,contours,-1,(0,0,255),3)
 

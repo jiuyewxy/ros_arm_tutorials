@@ -76,6 +76,7 @@ class TFPublish():
         tfm = TFMessage([dynamic_tf_2])
         self.pub_tf.publish(tfm)
 
+
 if __name__ == '__main__':
     try:
         tf_pub = TFPublish()

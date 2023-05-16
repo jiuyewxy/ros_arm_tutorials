@@ -99,8 +99,8 @@ add_executable(pick_with_AR_server src/pick_with_AR_server.cpp)
 target_link_libraries(pick_with_AR_server ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(pick_with_AR_server ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+
 catkin_install_python(PROGRAMS
         scripts/color_detection_demo.py scripts/cv_bridge_demo.py scripts/pick_with_AR_server.py scripts/pub_camera_TF.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
         )
-

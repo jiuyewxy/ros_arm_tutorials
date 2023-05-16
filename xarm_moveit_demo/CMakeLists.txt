@@ -80,6 +80,7 @@ add_executable(moveit_pick_place_demo src/moveit_pick_place_demo.cpp)
 target_link_libraries(moveit_pick_place_demo ${catkin_LIBRARIES})
 add_dependencies(moveit_pick_place_demo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+
 ## Mark executable scripts (Python etc.) for installation
 catkin_install_python(PROGRAMS
         scripts/moveit_arcline_demo.py scripts/moveit_beeline_demo.py scripts/moveit_joint_pose_demo.py scripts/moveit_pick_place_demo.py

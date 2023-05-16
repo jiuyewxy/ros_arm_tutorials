@@ -29,7 +29,9 @@ def MoveitJointPoseDemo():
     arm.set_joint_value_target(joint_positions)
 
     # 规划出一条从当前位姿到目标位姿的轨迹，存放在traj变量里
-    traj = arm.plan()
+    #traj = arm.plan()
+    plan_success,traj,planning_time,error_code=arm.plan()
+
 
     # 执行规划好的轨迹
     arm.execute(traj)

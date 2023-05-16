@@ -4,13 +4,13 @@
 
 欢迎使用《ROS机械臂开发与实践》教材，本书基于“如何从零开始搭建机械臂的 ROS 控制系统”这一问题，由浅入深，由易到难，理论结合实践，详细介绍了 ROS 机械臂开发过程中使用的技术，并通过大量原创工程实例，帮助读者深入理解 ROS 框架，学会将 ROS 和 MoveIt!应用到具体的机器人开发实践中。
 
+![](img/book.jpg)
+
 本书配套教学软件包、课后题解析、教学示例视频，以及一套包含PPT、讲稿和实验指导书的完整课程。本书正文讲解以 ROS-Melodic 版本为准，同时在开源仓库提供 Kinetic 和 Noetic 版本代码，便于读者测试。书中教学示例均提供 C++和 Python 两种编程实现方式，方便不同编程基础的读者入门和使用。
 
 <img src="img/ROS机械臂开发与实践.png" style="zoom:60%;" />
 
 在学习中如果遇到问题，可在issues中提问，我们的团队会耐心回答。同时也欢迎各位老师与我们合作开展线上、线下教学。
-
-<img src="img/book.jpg" style="zoom:30%;" />
 
 ## 功能包简介
 
@@ -33,26 +33,49 @@
 
 ## 代码下载与编译
 
-进入ROS工作空间的src目录，可以使用下面命令下载 GitHub 上对应分支的代码，以 melodic-devel 分支为例：
+进入ROS工作空间的src目录，可以使用下面命令下载 GitHub 上对应分支的代码：
 
 ```
-git clone -b melodic-devel https://github.com/jiuyewxy/ros_arm_tutorials.git
+git clone -b noetic-devel https://github.com/jiuyewxy/ros_arm_tutorials.git
 ```
 
-或者使用下面命令下载 Gitee 上 melodic-devel 分支的代码：
+或者使用下面命令下载 Gitee 上 noetic-devel 分支的代码：
 
 ```
-git clone -b melodic-devel https://gitee.com/xiao_yun_wang/ros_arm_tutorials.git
+git clone -b noetic-devel https://gitee.com/xiao_yun_wang/ros_arm_tutorials.git
 ```
 
+代码下载完成后，首先源码安装几个依赖项。
 
-代码下载完成后，在终端依次输入以下命令安装依赖包并编译代码。
+进入工作空间src目录，源码安装serial：
 
 ```
-cd ..
+cd ~/tutorial_ws/src
+git clone https://github.com/wjwwood/serial.git
+cd serial
+make
+make install
+```
+
+修改serial文件夹下的CMakeLists.txt文件，将第65行include_directories(include) 改为：
+
+```
+include_directories(include  ${catkin_INCLUDE_DIRS})
+```
+
+进入工作空间src目录，下载ar-track-alvar源码：
+
+```
+cd ~/tutorial_ws/src
+git clone https://github.com/machinekoder/ar_track_alvar.git -b noetic-devel
+```
+
+在终端依次输入以下命令安装依赖包并编译代码。
+
+```
+cd ~/tutorial_ws/
 rosdep install --from-paths src -i -y
-sudo apt-get install ros-melodic-moveit*
-sudo apt-get install ros-melodic-ar-track-alvar
+sudo apt-get install ros-noetic-moveit*
 catkin_make
 ```
 
@@ -66,10 +89,6 @@ catkin_make
 <img src="img/展示示例1.png" style="zoom:67%;" />
 
 <img src="img/展示示例2.png" style="zoom:60%;" />
-
-## 课后习题解析
-
-详见仓库: https://github.com/jiuyewxy/ros_arm_exercises
 
 ## Copyright
 
