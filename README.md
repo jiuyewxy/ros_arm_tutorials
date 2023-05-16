@@ -69,7 +69,7 @@ catkin_make
 
 ## 课后习题解析
 
-详见仓库: https://gitee.com/xiao_yun_wang/ros_arm_exercises
+详见仓库: https://github.com/jiuyewxy/ros_arm_exercises
 
 ## Copyright
 
