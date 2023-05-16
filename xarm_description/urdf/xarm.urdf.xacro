@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro"
+       name="xarm" >
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:property name="M_PI_2" value="1.570796327" />
+
+  <!-- common gazebo -->
+  <xacro:include filename="$(find xarm_description)/urdf/common.gazebo.xacro" />
+
+  <!-- xbot_arm 桌面机械臂 -->
+  <xacro:include filename="$(find xarm_description)/urdf/arm.urdf.xacro" />
+
+  <!-- arm -->
+  <xacro:xarm />
+
+</robot>

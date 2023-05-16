@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="darm">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0170438376621442 -0.00161939260033202 0.0724948120416346"
+        rpy="0 0 0" />
+      <mass
+        value="0.553260236209975" />
+      <inertia
+        ixx="0.0026064369657739"
+        ixy="-3.75417322493413E-06"
+        ixz="-0.000130251544119884"
+        iyy="0.0030374528540518"
+        iyz="-6.38538659319183E-05"
+        izz="0.00326639522571418" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="arm_link1">
+    <inertial>
+      <origin
+        xyz="-0.000128118597624595 -0.013600859873518 0.0619700515240474"
+        rpy="0 0 0" />
+      <mass
+        value="0.116423492746118" />
+      <inertia
+        ixx="0.000383159534984"
+        ixy="2.54107232372875E-07"
+        ixz="-3.85780244490042E-07"
+        iyy="0.000273038903011898"
+        iyz="-3.95745103630226E-05"
+        izz="0.000290856563695735" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint1"
+    type="revolute">
+    <origin
+      xyz="0 0 0.1398"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="arm_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="arm_link2">
+    <inertial>
+      <origin
+        xyz="-0.0167470721830778 0.0837012292062612 0.0494160246373337"
+        rpy="0 0 0" />
+      <mass
+        value="0.13106183966175" />
+      <inertia
+        ixx="0.000452532131006666"
+        ixy="1.7225875446078E-05"
+        ixz="-5.65576192946032E-07"
+        iyy="0.000314237741777992"
+        iyz="3.03456757973936E-07"
+        izz="0.000368104794036537" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint2"
+    type="revolute">
+    <origin
+      xyz="0 0.05 0.095"
+      rpy="1.5708 0 0" />
+    <parent
+      link="arm_link1" />
+    <child
+      link="arm_link2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.92"
+      upper="1.4"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="arm_link3">
+    <inertial>
+      <origin
+        xyz="8.14220214549778E-05 -2.55521254908583E-05 0.0513480682450201"
+        rpy="0 0 0" />
+      <mass
+        value="0.086404289942178" />
+      <inertia
+        ixx="0.00019238332088768"
+        ixy="9.37345781486257E-10"
+        ixz="-9.86128909629744E-07"
+        iyy="0.000179094376632573"
+        iyz="5.16398573265577E-08"
+        izz="0.000133516037906134" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint3"
+    type="revolute">
+    <origin
+      xyz="-0.0185 0.145 0.0495"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="arm_link2" />
+    <child
+      link="arm_link3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2"
+      upper="2"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="arm_link4">
+    <inertial>
+      <origin
+        xyz="-0.000397266371060974 0.0598499691331028 0.0332505816207749"
+        rpy="0 0 0" />
+      <mass
+        value="0.0706309208099729" />
+      <inertia
+        ixx="0.000125455196294012"
+        ixy="4.89969471646502E-07"
+        ixz="1.48744519872573E-11"
+        iyy="9.24064014654882E-05"
+        iyz="-1.65705397681498E-09"
+        izz="0.00010157515036857" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint4"
+    type="revolute">
+    <origin
+      xyz="0.0005 0.033 0.105"
+      rpy="1.5708 0 0" />
+    <parent
+      link="arm_link3" />
+    <child
+      link="arm_link4" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="arm_link5">
+    <inertial>
+      <origin
+        xyz="-0.000727167883412056 1.56292209022133E-07 0.0448838742871538"
+        rpy="0 0 0" />
+      <mass
+        value="0.0364674809635235" />
+      <inertia
+        ixx="4.04278205884715E-05"
+        ixy="-4.07023183502984E-11"
+        ixz="4.60079695225723E-07"
+        iyy="4.23703736642409E-05"
+        iyz="-1.25762158698788E-11"
+        izz="2.78990988682426E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint5"
+    type="revolute">
+    <origin
+      xyz="0.00051471 0.105 0.03325"
+      rpy="-1.5708 0 -0.004902" />
+    <parent
+      link="arm_link4" />
+    <child
+      link="arm_link5" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2"
+      upper="2"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="arm_link6">
+    <inertial>
+      <origin
+        xyz="0.00213188955016766 0.0459939849274835 0.0209144934053668"
+        rpy="0 0 0" />
+      <mass
+        value="0.0283301622794919" />
+      <inertia
+        ixx="3.08264693220698E-05"
+        ixy="-4.86665976397017E-07"
+        ixz="1.45743977499393E-07"
+        iyy="2.03804574554996E-05"
+        iyz="4.96221959166978E-08"
+        izz="2.47043306516181E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/arm_link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="arm_joint6"
+    type="revolute">
+    <origin
+      xyz="0 0.0215 0.075"
+      rpy="1.5708 -0.004902 0" />
+    <parent
+      link="arm_link5" />
+    <child
+      link="arm_link6" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="0.52"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="gipper_link1">
+    <inertial>
+      <origin
+        xyz="-0.010164529829209 -0.0428625582773113 -0.0290009634440926"
+        rpy="0 0 0" />
+      <mass
+        value="0.0229473565168191" />
+      <inertia
+        ixx="2.67319833363079E-05"
+        ixy="5.28739561760064E-07"
+        ixz="4.53208934357424E-10"
+        iyy="1.30658365460368E-05"
+        iyz="8.86316306994805E-10"
+        izz="1.74706100511411E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gipper_jiont1"
+    type="revolute">
+    <origin
+      xyz="-0.029493 0.062645 0.03295"
+      rpy="3.1367 1.5708 0" />
+    <parent
+      link="arm_link6" />
+    <child
+      link="gipper_link1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="gipper_link2">
+    <inertial>
+      <origin
+        xyz="-0.0101244857399807 -0.0426966769105175 0.0289990675316095"
+        rpy="0 0 0" />
+      <mass
+        value="0.0230365589670101" />
+      <inertia
+        ixx="2.69624656070297E-05"
+        ixy="4.89378228982721E-07"
+        ixz="4.53308989647818E-10"
+        iyy="1.31475134895181E-05"
+        iyz="9.01986586877508E-10"
+        izz="1.76482216371948E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gipper_joint2"
+    type="revolute">
+    <origin
+      xyz="-0.029493 0.062645 0.00945"
+      rpy="3.1415926 -1.5707 0" />
+    <parent
+      link="arm_link6" />
+    <child
+      link="gipper_link2" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="1.57"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="gipper_centor_link">
+    <inertial>
+      <origin
+        xyz="-4.33680868994202E-19 0 -3.46944695195361E-18"
+        rpy="0 0 0" />
+      <mass
+        value="0.0141371669411541" />
+      <inertia
+        ixx="1.27234502470387E-06"
+        ixy="-1.27447352890596E-54"
+        ixz="0"
+        iyy="1.27234502470387E-06"
+        iyz="2.69927074778492E-39"
+        izz="1.27234502470387E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_centor_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://darm/meshes/gipper_centor_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gipper_centor_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0001869 0.12514 0.0212"
+      rpy="3.1416 1.5708 0" />
+    <parent
+      link="arm_link6" />
+    <child
+      link="gipper_centor_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

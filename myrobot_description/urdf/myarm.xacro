@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<robot name="myarm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- include other file -->
+    <xacro:include filename="$(find myrobot_description)/urdf/materials.xacro" />
+
+    <!-- Constants -->
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+    <xacro:property name="M_PI_2" value="1.570796327" />
+    <xacro:property name="arm_friction"       value="50.0" />
+    <xacro:property name="arm_damping"        value="1.0" />
+
+    <!-- Macro for inertia matrix -->
+    <!-- m:mass r:radius l:length -->
+    <xacro:macro name="cylinder_inertial_matrix" params="m r l">
+        <inertial>
+            <mass value="${m}" />
+            <inertia ixx="${m*(3*r*r+l*l)/12}" ixy = "0" ixz = "0"
+                iyy="${m*(3*r*r+l*l)/12}" iyz = "0"
+                izz="${m*r*r/2}" />
+        </inertial>
+    </xacro:macro>
+    <!-- m:mass l:length  w:width h:height-->
+    <xacro:macro name="box_inertial_matrix" params="m l w h">
+        <inertial>
+            <mass value="${m}" />
+            <inertia ixx="${m*(h*h+l*l)/12}" ixy = "0" ixz = "0"
+                iyy="${m*(w*w+l*l)/12}" iyz = "0"
+                izz="${m*(w*w+h*h)/12}" />
+        </inertial>
+    </xacro:macro>
+
+    <link name="arm_base_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.09"/>
+        <geometry>
+          <cylinder length="0.18" radius="0.1"/>
+        </geometry>
+        <material name="yellow" />
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.09"/>
+        <geometry>
+          <cylinder length="0.18" radius="0.1"/>
+        </geometry>
+      </collision>
+      <cylinder_inertial_matrix m="1.0" r="0.1" l="0.18"/>
+    </link>
+
+    <joint name="arm_joint1" type="revolute">
+      <parent link="arm_base_link"/>
+      <child link="arm_link1"/>
+      <origin rpy="0 0 0" xyz="0 0 0.18"/>
+      <axis xyz="0 0 1" />
+      <limit effort="300" velocity="0.6" lower="-2.96" upper="2.96"/>
+      <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+    </joint>
+
+    <link name="arm_link1">
+      <visual>
+        <geometry>
+          <box size="0.1 0.06 0.2"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0.03 0.1"/>
+        <material name="blue"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.1 0.06 0.2"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0.03 0.1"/>
+      </collision>
+      <box_inertial_matrix m="1.0" l="0.1" w="0.06" h="0.2"/>
+
+    </link>
+    <joint name="arm_joint2" type="revolute">
+      <parent link="arm_link1"/>
+      <child link="arm_link2"/>
+      <origin rpy="0 0 0" xyz="0 0 0.18"/>
+      <axis xyz="0 1 0" />
+      <limit effort="300" velocity="0.6" lower="-${M_PI/3*2}" upper="${M_PI/3*2}"/>
+      <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+    </joint>
+
+    <link name="arm_link2">
+      <visual>
+        <geometry>
+          <cylinder length="0.24" radius="0.03"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.12"/>
+        <material name="red" />
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="0.24" radius="0.03"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.12"/>
+      </collision>
+      <cylinder_inertial_matrix m="1.0" r="0.03" l="0.24"/>
+    </link>
+
+    <joint name="arm_joint3" type="revolute">
+      <parent link="arm_link2"/>
+      <child link="arm_link3"/>
+      <origin rpy="0 0 0" xyz="0 0 0.24"/>
+      <axis xyz="0 1 0" />
+      <limit effort="300" velocity="0.6" lower="-${M_PI/3*2}" upper="${M_PI/3*2}"/>
+      <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+    </joint>
+
+    <link name="arm_link3">
+      <visual>
+        <geometry>
+          <box size="0.04 0.04 0.18"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.09"/>
+        <material name="green" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.04 0.04 0.18"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      </collision>
+      <box_inertial_matrix m="1.0" l="0.04" w="0.04" h="0.18"/>
+    </link>
+    <joint name="gripper_base_joint" type="fixed">
+      <parent link="arm_link3"/>
+      <child link="gripper_base_link"/>
+      <origin rpy="0 0 0" xyz="0 0 0.18"/>
+    </joint>
+
+    <link name="gripper_base_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.1 0.02"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.01"/>
+        <material name="white" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.1 0.02"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.01"/>
+      </collision>
+      <box_inertial_matrix m="1.0" l="0.03" w="0.2" h="0.02"/>
+    </link>
+    <joint name="finger1_joint" type="prismatic">
+      <parent link="gripper_base_link"/>
+      <child link="finger1_link"/>
+      <origin rpy="0 0 0" xyz="0 0.03 0.02"/>
+      <axis xyz="0 1 0" />
+      <limit effort="300" velocity="0.6" lower="-0.025" upper="0.01"/>
+      <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+    </joint>
+
+    <link name="finger1_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.05"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.025"/>
+        <material name="purple" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.05"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.025"/>
+      </collision>
+      <box_inertial_matrix m="1.0" l="0.03" w="0.01" h="0.05"/>
+    </link>
+
+    <joint name="finger2_joint" type="prismatic">
+      <parent link="gripper_base_link"/>
+      <child link="finger2_link"/>
+      <origin rpy="0 0 0" xyz="0 -0.03 0.02"/>
+      <axis xyz="0 1 0" />
+      <limit effort="300" velocity="0.6" lower="-0.01" upper="0.025"/>
+      <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+      <mimic joint="finger1_joint" multiplier="-1"/>
+    </joint>
+
+    <link name="finger2_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.05"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.025"/>
+        <material name="purple"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.05"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0.025"/>
+      </collision>
+      <box_inertial_matrix m="1.0" l="0.03" w="0.01" h="0.05"/>
+    </link>
+    <joint name="gripper_centor_joint" type="fixed">
+      <parent link="gripper_base_link"/>
+      <child link="gripper_centor_link"/>
+      <origin rpy="0 0 0" xyz="0 0 0.045"/>
+    </joint>
+
+    <link name="gripper_centor_link" />
+</robot>

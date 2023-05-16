@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<xacro:include filename="$(find xarm_description)/urdf/xarm.transmission.xacro" />
+<xacro:include filename="$(find xarm_description)/urdf/xarm.gazebo.xacro" />
+<xacro:property name="arm_friction"       value="1.0" />
+<xacro:property name="arm_damping"        value="1.0" />
+<xacro:macro name="xarm" >
+  <!-- link name="world" / -->
+
+  <!--joint name="virtual_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint -->
+
+  <link name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00594343164731706 -0.00101779633653512 0.070063016301284"
+        rpy="0 0 0" />
+      <mass
+        value="1.38676498234547" />
+      <inertia
+        ixx="0.00442668602597922"
+        ixy="4.0137655574151E-06"
+        ixz="5.63500481216971E-05"
+        iyy="0.00444008131004974"
+        iyz="8.0489126094332E-06"
+        izz="0.00774957715043441" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="LightGrey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="arm_1_link">
+    <inertial>
+         <origin
+           xyz="-0.000117276290344319 0.0122228931530341 -0.0624701032538624"
+           rpy="0 0 0" />
+         <mass
+           value="0.139955029249829" />
+         <inertia
+           ixx="0.000325457683704532"
+           ixy="1.35265023038897E-07"
+           ixz="-4.47803005233601E-08"
+           iyy="0.000236310540102376"
+           iyz="1.93791571216275E-06"
+           izz="0.000149250424678437" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_1_link.STL" />
+      </geometry>
+      <material
+        name="">
+      <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_1_joint" type="revolute">
+    <origin
+      xyz="0 0 0.14"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="arm_1_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+        lower="-2.094"
+        upper="2.094"
+        effort="100"
+        velocity="0.35" />
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+
+  <link name="arm_2_link">
+    <inertial>
+      <origin
+        xyz="-0.0174680236422027 0.0906428723777263 -3.29773055841057E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.169587438537964" />
+      <inertia
+        ixx="0.000621052722745594"
+        ixy="3.1093806499262E-05"
+        ixz="3.58966997593046E-09"
+        iyy="0.000313103181930873"
+        iyz="-1.89887310785702E-09"
+        izz="0.000405564215148294" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color rgba="0.7 0.75 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_2_joint" type="revolute">
+    <origin
+      xyz="0 0 -0.095"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="arm_1_link" />
+    <child
+      link="arm_2_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+        lower="-2.094"
+        upper="${M_PI_2}"
+        effort="100"
+        velocity="0.35" />
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+
+  <link name="arm_3_link">
+    <inertial>
+      <origin
+        xyz="-0.000485421157864062 6.83606345788855E-05 -0.0518192203685102"
+        rpy="0 0 0" />
+      <mass
+        value="0.113439004135591" />
+      <inertia
+        ixx="0.000235493816702144"
+        ixy="1.90688230079504E-09"
+        ixz="8.38803636808141E-07"
+        iyy="0.00016178376053715"
+        iyz="7.21496828022609E-08"
+        izz="0.000115808035506604" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_3_link.STL" />
+      </geometry>
+      <material
+        name="">
+      <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_3_joint" type="revolute">
+    <origin
+      xyz="-0.018 0.145 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="arm_2_link" />
+    <child
+      link="arm_3_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit lower="-2.793" upper="2.793" effort="100" velocity="0.35"/>
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+
+  <link name="arm_4_link">
+    <inertial>
+      <origin
+        xyz="-0.000523676254705792 0.0548426547509552 -2.32870051976362E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.0923387760232059" />
+      <inertia
+        ixx="0.000210731589973129"
+        ixy="3.75072823663759E-08"
+        ixz="-1.24864320496203E-09"
+        iyy="0.000113562778686391"
+        iyz="2.14300015333684E-09"
+        izz="0.000125255151693492" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_4_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_4_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_4_joint" type="revolute">
+    <origin
+      xyz="0 0 -0.105"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="arm_3_link" />
+    <child
+      link="arm_4_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit lower="-1.92" upper="1.92" effort="100" velocity="0.35"/>
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+
+  <link name="arm_5_link">
+    <inertial>
+      <origin
+        xyz="-0.000318440471593399 -4.33257243015121E-09 -0.0421503668391696"
+        rpy="0 0 0" />
+      <mass
+        value="0.0467464068633803" />
+      <inertia
+        ixx="5.04548630748624E-05"
+        ixy="3.58124086862273E-11"
+        ixz="-3.05691633144458E-07"
+        iyy="3.77221825095438E-05"
+        iyz="3.37480290018196E-12"
+        izz="2.16144252369209E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_5_link.STL" />
+      </geometry>
+      <material
+        name="">
+      <color rgba="0.7 0.75 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_5_link.STL" />
+      </geometry>
+      <material
+        name="">
+      <color rgba="0.7 0.75 0.7 1.0"/>
+      </material>
+    </collision>
+  </link>
+
+  <joint name="arm_5_joint" type="revolute">
+    <origin xyz="0 0.105 0" rpy="1.5708 0 0"/>
+    <parent
+      link="arm_4_link" />
+    <child
+      link="arm_5_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit lower="-2.793" upper="2.793" effort="100" velocity="0.35"/>
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+
+  <link name="arm_6_link">
+    <inertial>
+      <origin
+        xyz="0.00023077781229322 0.0477776544969339 -0.000274578550932736"
+        rpy="0 0 0" />
+      <mass
+        value="0.0663534128705839" />
+      <inertia
+        ixx="4.46094691893757E-05"
+        ixy="-1.67487010399996E-07"
+        ixz="-5.11806394396779E-07"
+        iyy="3.14288652751225E-05"
+        iyz="-1.63804853996163E-09"
+        izz="5.02053835003699E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_6_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/arm_6_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_6_joint" type="revolute">
+    <origin xyz="0 -0.0002 -0.075" rpy="-1.5708 0 0"/>
+    <parent
+      link="arm_5_link" />
+    <child
+      link="arm_6_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit lower="-1.57" upper="1.57" effort="100" velocity="0.35"/>
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+  <link
+    name="gripper_1_link">
+    <inertial>
+      <origin
+        xyz="0.0428524050252714 0.0102173668833365 1.53174098056555E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0229460702572688" />
+      <inertia
+        ixx="1.29555143093886E-05"
+        ixy="5.68898432881771E-07"
+        ixz="1.65057295666631E-07"
+        iyy="2.6397024313168E-05"
+        iyz="3.9571735991224E-08"
+        izz="1.7220072843041E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/gripper_1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/gripper_1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gripper_1_joint"
+    type="revolute">
+    <origin xyz="-0.0001 0.06175 0.0115" rpy="1.5708 0 1.5708"/>
+    <parent
+      link="arm_6_link" />
+    <child
+      link="gripper_1_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.698"
+      effort="100"
+      velocity="0.35" />
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+  </joint>
+  <link
+    name="gripper_2_link">
+    <inertial>
+      <origin
+        xyz="0.0428304976382079 0.0102055784464402 9.00813000661443E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.0229585233092397" />
+      <inertia
+        ixx="1.30784892266813E-05"
+        ixy="5.08906298757747E-07"
+        ixz="2.22019726582854E-12"
+        iyy="2.67601282938736E-05"
+        iyz="-9.03490236226897E-12"
+        izz="1.74955869845825E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/gripper_2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://xarm_description/meshes/gripper_2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="gripper_2_joint"
+    type="revolute">
+    <origin xyz="-0.0001 0.06175 -0.012" rpy="-1.5708 0 1.5708"/>
+    <parent
+      link="arm_6_link" />
+    <child
+      link="gripper_2_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.698"
+      effort="100"
+      velocity="0.35" />
+    <dynamics friction="${arm_friction}" damping="${arm_damping}"/>
+    <mimic joint="gripper_1_joint" >
+      <multiplier>1</multiplier>
+    </mimic>
+  </joint>
+
+  <link
+    name="gripper_centor_link">
+  </link>
+
+  <joint
+    name="gripper_centor_joint"
+    type="fixed">
+   <origin xyz="-0.000 0.125 0" rpy="-1.5708 0 1.5708"/>
+    <parent
+      link="arm_6_link" />
+    <child
+      link="gripper_centor_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <xacro:arm_simple_transmission name="arm" number="1" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="arm" number="2" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="arm" number="3" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="arm" number="4" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="arm" number="5" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="arm" number="6" reduction="1.0" offset_value="0.0"/>
+  <xacro:arm_simple_transmission name="gripper" number="1" reduction="1.0" offset_value="0.0"/>
+<!--  <xacro:arm_simple_transmission name="gripper" number="2" reduction="1.0" offset_value="0.0"/>-->
+  <xacro:mimic_joint_plugin_gazebo name_prefix="gripper_2_joint"
+  parent_joint="gripper_1_joint" mimic_joint="gripper_2_joint"
+  has_pid="false" multiplier="1.0" max_effort="100.0" />
+
+  <xacro:arm_gazebo name="arm" number="1"/>
+  <xacro:arm_gazebo name="arm" number="2"/>
+  <xacro:arm_gazebo name="arm" number="3"/>
+  <xacro:arm_gazebo name="arm" number="4"/>
+  <xacro:arm_gazebo name="arm" number="5"/>
+  <xacro:arm_gazebo name="arm" number="6"/>
+  <xacro:arm_gazebo name="gripper" number="1"/>
+  <xacro:arm_gazebo name="gripper" number="2"/>
+
+  </xacro:macro>
+</robot>

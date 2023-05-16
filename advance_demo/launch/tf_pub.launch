@@ -1,0 +1,12 @@
+<launch>
+    <arg name="use_python" default="true" />
+    <include file="$(find advance_demo)/launch/pub_marker.launch">
+        <arg name="use_python" value="$(arg use_python)"/>
+    </include>
+    <node pkg="advance_demo" name="tf_pub" type="tf_pub.py" clear_params="true" output="screen" if="$(arg use_python)">
+        <remap from="/tf_pub/marker_pose" to="/marker_pose"/>
+    </node>
+    <node pkg="advance_demo" name="tf_pub" type="tf_pub" clear_params="true" output="screen" unless="$(arg use_python)">
+        <remap from="/tf_pub/marker_pose" to="/marker_pose"/>
+    </node>
+</launch>

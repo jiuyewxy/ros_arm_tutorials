@@ -1,0 +1,8 @@
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find xarm_description)/urdf/xarm.urdf.xacro'" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="20.0" />
+  </node>
+  <node name="joint_states_pub" pkg="urdf_demo" type="joint_states_pub.py" output="screen"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find xarm_description)/urdf.rviz" />
+</launch>

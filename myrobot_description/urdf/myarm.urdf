@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<robot name="myarm">
+
+  <link name="arm_base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      <geometry>
+        <cylinder length="0.18" radius="0.1"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      <geometry>
+        <cylinder length="0.18" radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.0052" ixy="0.0" ixz="0.0" iyy="0.0052" iyz="0.0" izz="0.005"/>
+    </inertial>
+  </link>
+
+  <joint name="arm_joint1" type="revolute">
+    <parent link="arm_base_link"/>
+    <child link="arm_link1"/>
+    <origin rpy="0 0 0" xyz="0 0 0.18"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.6" lower="-2.96" upper="2.96"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="arm_link1">
+    <visual>
+      <geometry>
+        <box size="0.1 0.06 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.03 0.1"/>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.1 0.06 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.03 0.1"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.004167" ixy="0.0" ixz="0.0" iyy="0.001133" iyz="0.0" izz="0.003633"/>
+    </inertial>
+  </link>
+  <joint name="arm_joint2" type="revolute">
+    <parent link="arm_link1"/>
+    <child link="arm_link2"/>
+    <origin rpy="0 0 0" xyz="0 0 0.18"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.6" lower="-2.09" upper="2.09"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="arm_link2">
+    <visual>
+      <geometry>
+        <cylinder length="0.24" radius="0.03"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.12"/>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.24" radius="0.03"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.12"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.005025" ixy="0.0" ixz="0.0" iyy="0.005025" iyz="0.0" izz="0.00045"/>
+    </inertial>
+  </link>
+
+  <joint name="arm_joint3" type="revolute">
+    <parent link="arm_link2"/>
+    <child link="arm_link3"/>
+    <origin rpy="0 0 0" xyz="0 0 0.24"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.6" lower="-2.09" upper="2.09"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="arm_link3">
+    <visual>
+      <geometry>
+        <box size="0.04 0.04 0.18"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.04 0.18"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.09"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.002833" ixy="0.0" ixz="0.0" iyy="0.000267" iyz="0.0" izz="0.002833"/>
+    </inertial>
+  </link>
+  <joint name="gripper_base_joint" type="fixed">
+    <parent link="arm_link3"/>
+    <child link="gripper_base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.18"/>
+  </joint>
+
+  <link name="gripper_base_link">
+    <visual>
+      <geometry>
+        <box size="0.03 0.1 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.1 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.01"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.000108" ixy="0.0" ixz="0.0" iyy="0.000083" iyz="0.0" izz="0.000867"/>
+    </inertial>
+  </link>
+  <joint name="finger1_joint" type="prismatic">
+    <parent link="gripper_base_link"/>
+    <child link="finger1_link"/>
+    <origin rpy="0 0 0" xyz="0 0.03 0.02"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.6" lower="-0.025" upper="0.01"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+  <link name="finger1_link">
+    <visual>
+      <geometry>
+        <box size="0.03 0.01 0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.025"/>
+      <material name="purple">
+        <color rgba="1 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.01 0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.025"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.000283" ixy="0.0" ixz="0.0" iyy="0.000083" iyz="0.0" izz="0.000217"/>
+    </inertial>
+  </link>
+
+  <joint name="finger2_joint" type="prismatic">
+    <parent link="gripper_base_link"/>
+    <child link="finger2_link"/>
+    <origin rpy="0 0 0" xyz="0 -0.03 0.02"/>
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.6" lower="-0.01" upper="0.025"/>
+    <dynamics damping="50" friction="1"/>
+    <mimic joint="finger1_joint" multiplier="-1"/>
+  </joint>
+
+  <link name="finger2_link">
+    <visual>
+      <geometry>
+        <box size="0.03 0.01 0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.025"/>
+      <material name="purple">
+        <color rgba="1 0 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.03 0.01 0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.025"/>
+    </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.000283" ixy="0.0" ixz="0.0" iyy="0.000083" iyz="0.0" izz="0.000217"/>
+    </inertial>
+  </link>
+  <joint name="gripper_centor_joint" type="fixed">
+    <parent link="gripper_base_link"/>
+    <child link="gripper_centor_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0.045"/>
+  </joint>
+
+  <link name="gripper_centor_link" />
+
+
+
+</robot>

@@ -1,0 +1,26 @@
+digraph G {
+node [shape=box];
+"arm_base_link" [label="arm_base_link"];
+"arm_link1" [label="arm_link1"];
+"arm_link2" [label="arm_link2"];
+"arm_link3" [label="arm_link3"];
+"gripper_base_link" [label="gripper_base_link"];
+"finger1_link" [label="finger1_link"];
+"finger2_link" [label="finger2_link"];
+"gripper_centor_link" [label="gripper_centor_link"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"arm_base_link" -> "arm_joint1" [label="xyz: 0 0 0.18 \nrpy: 0 -0 0"]
+"arm_joint1" -> "arm_link1"
+"arm_link1" -> "arm_joint2" [label="xyz: 0 0 0.18 \nrpy: 0 -0 0"]
+"arm_joint2" -> "arm_link2"
+"arm_link2" -> "arm_joint3" [label="xyz: 0 0 0.24 \nrpy: 0 -0 0"]
+"arm_joint3" -> "arm_link3"
+"arm_link3" -> "gripper_base_joint" [label="xyz: 0 0 0.18 \nrpy: 0 -0 0"]
+"gripper_base_joint" -> "gripper_base_link"
+"gripper_base_link" -> "finger1_joint" [label="xyz: 0 0.03 0.02 \nrpy: 0 -0 0"]
+"finger1_joint" -> "finger1_link"
+"gripper_base_link" -> "finger2_joint" [label="xyz: 0 -0.03 0.02 \nrpy: 0 -0 0"]
+"finger2_joint" -> "finger2_link"
+"gripper_base_link" -> "gripper_centor_joint" [label="xyz: 0 0 0.045 \nrpy: 0 -0 0"]
+"gripper_centor_joint" -> "gripper_centor_link"
+}

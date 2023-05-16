@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<robot name="myrobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- include arm xacro file -->
+    <xacro:include filename="$(find myrobot_description)/urdf/myarm.xacro" />
+    <!-- Constants -->
+    <xacro:property name="car_length" value="0.5" />
+    <xacro:property name="car_width" value="0.4" />
+    <xacro:property name="car_height" value="0.18" />
+    <link name="base_footprint"/>
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 ${car_height/2+0.05}" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+    </joint>
+    
+    <link name="base_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="${car_length} ${car_width} ${car_height}"/>
+        </geometry>
+        <material name="orange" />
+      </visual>
+      <visual name="front_cast">
+        <origin rpy="0 0 0" xyz="0.17 0 -${car_height/2+0.05/2}"/>
+        <geometry>
+          <sphere radius="0.0249"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+      <visual name="back_cast">
+        <origin rpy="0 0 0" xyz="-0.17 0 -${car_height/2+0.05/2}"/>
+        <geometry>
+          <sphere radius="0.0249"/>
+        </geometry>
+        <material name="light_grey" />
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="${car_length} ${car_width} ${car_height}"/>
+        </geometry>
+      </collision>
+      <collision name="front_cast">
+        <origin rpy="0 0 0" xyz="0.17 0 -${car_height/2+0.05/2}"/>
+        <geometry>
+          <sphere radius="0.0249"/>
+        </geometry>
+      </collision>
+      <collision name="back_cast">
+        <origin rpy="0 0 0" xyz="-0.17 0 -${car_height/2+0.05/2}"/>
+        <geometry>
+          <sphere radius="0.0249"/>
+        </geometry>
+      </collision>
+      <box_inertial_matrix m="2.0" l="${car_length}" w="${car_width}" h="${car_height}"/>
+    </link>
+
+    <link name="left_wheel">
+      <collision name="collision">
+        <origin xyz="0 0 0" rpy="${M_PI_2} 0 0"/>
+        <geometry>
+          <cylinder radius="0.095" length="0.05"/>
+        </geometry>
+      </collision>
+      <visual name="left_wheel_visual">
+        <origin xyz="0 0 0" rpy="0 0 -${M_PI_2}"/>
+        <geometry>
+          <mesh filename="package://myrobot_description/meshes/wheel.dae" />
+        </geometry>
+      </visual>
+      <cylinder_inertial_matrix m="1.0" r="0.095" l="0.05"/>
+    </link>
+
+    <joint name="left_wheel_joint" type="continuous">
+      <axis xyz="0 1 0" rpy="0 0 0"/>
+      <origin xyz="0 ${car_width/2+0.03} 0.095" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="left_wheel"/>
+      <limit effort="6" velocity="1.0"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="right_wheel">
+      <collision name="collision">
+        <origin xyz="0 0 0" rpy="-${M_PI_2}  0 0"/>
+        <geometry>
+          <cylinder radius="0.095" length="0.05"/>
+        </geometry>
+      </collision>
+      <visual name="right_wheel_visual">
+        <origin xyz="0 0 0" rpy="0 0 ${M_PI_2}"/>
+        <geometry>
+          <mesh filename="package://myrobot_description/meshes/wheel.dae" />
+        </geometry>
+      </visual>    
+      <cylinder_inertial_matrix m="1.0" r="0.095" l="0.05"/>
+    </link>
+    <joint name="right_wheel_joint" type="continuous">
+      <axis xyz="0 1 0" rpy="0 0 0"/>
+      <origin xyz="0 -${car_width/2+0.03} 0.095" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="right_wheel"/>
+      <limit effort="6" velocity="1.0"/>
+      <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+    <joint name="arm_base_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="arm_base_link"/>
+      <origin rpy="0 0 0" xyz="0 0 ${car_height/2}"/>
+    </joint>
+    
+</robot>

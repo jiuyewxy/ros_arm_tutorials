@@ -1,0 +1,7 @@
+string target_name
+geometry_msgs/Pose target_pose
+---
+bool success
+---
+uint8  percent_complete
+

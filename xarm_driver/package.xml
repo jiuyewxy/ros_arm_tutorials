@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>xarm_driver</name>
+  <version>1.0.0</version>
+  <description>The xarm_driver package</description>
+
+  <author email="wangxiaoyun@iscas.ac.cn">Xiaoyun Wang</author>
+  <author email="wangpeng@droid.ac.cn">Xiaoyun Wang</author>
+  <maintainer email="wangpeng@droid.ac.cn">Roc Wang</maintainer>
+  <maintainer email="wangxiaoyun@iscas.ac.cn">Xiaoyun Wang</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>ecl_build</build_depend>
+  <build_depend>ecl_devices</build_depend>
+  <build_depend>ecl_geometry</build_depend>
+  <build_depend>ecl_time</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>serial</build_depend>
+
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>robot_state_publisher</build_depend>
+
+  <build_depend>message_generation</build_depend>
+  <build_export_depend>ecl_build</build_export_depend>
+  <build_export_depend>ecl_devices</build_export_depend>
+  <build_export_depend>ecl_geometry</build_export_depend>
+  <build_export_depend>ecl_time</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <exec_depend>actionlib_msgs</exec_depend>
+  <build_depend>actionlib</build_depend>
+  <exec_depend>actionlib</exec_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+
+  <exec_depend>ecl_build</exec_depend>
+  <exec_depend>ecl_devices</exec_depend>
+  <exec_depend>ecl_geometry</exec_depend>
+  <exec_depend>ecl_time</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <depend>tf2_ros</depend>
+  <exec_depend>serial</exec_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

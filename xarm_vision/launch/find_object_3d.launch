@@ -1,0 +1,32 @@
+<launch>
+    <arg name="object_prefix" default="object"/>
+    <arg name="objects_path"  default=""/>
+    <arg name="gui"           default="true"/>
+    <arg name="approx_sync"   default="true"/>
+    <arg name="pnp"           default="true"/>
+    <arg name="tf_example"    default="true"/>
+    <arg name="settings_path" default="~/.ros/find_object_2d.ini"/>
+
+    <arg name="rgb_topic"         default="/camera/color/image_raw"/>
+    <arg name="depth_topic"       default="/camera/aligned_depth_to_color/image_raw"/>
+    <arg name="camera_info_topic" default="/camera/aligned_depth_to_color/camera_info"/>
+
+    <node name="find_object_3d" pkg="find_object_2d" type="find_object_2d" output="screen">
+        <param name="gui" value="$(arg gui)" type="bool"/>
+        <param name="settings_path" value="$(arg settings_path)" type="str"/>
+        <param name="subscribe_depth" value="true" type="bool"/>
+        <param name="objects_path" value="$(arg objects_path)" type="str"/>
+        <param name="object_prefix" value="$(arg object_prefix)" type="str"/>
+        <param name="approx_sync" value="$(arg approx_sync)" type="bool"/>
+        <param name="pnp" value="$(arg pnp)" type="bool"/>
+
+        <remap from="rgb/image_rect_color" to="$(arg rgb_topic)"/>
+        <remap from="depth_registered/image_raw" to="$(arg depth_topic)"/>
+        <remap from="depth_registered/camera_info" to="$(arg camera_info_topic)"/>
+    </node>
+    <!-- Example of tf synchronisation with the objectsStamped message -->
+    <node if="$(arg tf_example)" name="tf_example" pkg="find_object_2d" type="tf_example" output="screen">
+        <param name="object_prefix" value="$(arg object_prefix)" type="str"/>
+    </node>
+
+</launch>

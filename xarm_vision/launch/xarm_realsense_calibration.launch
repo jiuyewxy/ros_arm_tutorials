@@ -1,0 +1,42 @@
+<launch>
+    <arg name="namespace_prefix" default="xarm_realsense_handeyecalibration" />
+
+    <arg name="marker_size" doc="Size of the ArUco marker used, in meters" default="0.094" />
+    <arg name="marker_id" doc="The ID of the ArUco marker used" default="100"/>
+
+    <!-- 1. start the Realsense415 camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+
+    <!-- 2. start the robot -->
+    <include file="$(find xarm_driver)/launch/xarm_driver.launch" />
+    <include file="$(find xarm_moveit_config)/launch/xarm_moveit_planning_execution.launch" />
+
+    <!-- 3. start aruco_tracker node -->
+    <node name="aruco_tracker" pkg="aruco_ros" type="single">
+        <remap from="/camera_info" to="/camera/color/camera_info" />
+        <remap from="/image" to="/camera/color/image_raw" />
+        <param name="image_is_rectified" value="true"/>
+        <param name="marker_size"        value="$(arg marker_size)"/>
+        <param name="marker_id"          value="$(arg marker_id)"/>
+        <param name="reference_frame"    value="camera_link"/>
+        <param name="camera_frame"       value="camera_color_optical_frame"/>
+        <param name="marker_frame"       value="camera_marker" />
+    </node>
+
+    <!-- 4. start easy_handeye -->
+    <include file="$(find easy_handeye)/launch/calibrate.launch" >
+        <arg name="namespace_prefix" value="$(arg namespace_prefix)" />
+        <arg name="move_group" default="xarm" />
+
+        <arg name="eye_on_hand" value="false" />
+
+        <arg name="tracking_base_frame" value="camera_link" />
+        <arg name="tracking_marker_frame" value="camera_marker" />
+        <arg name="robot_base_frame" value="base_link" />
+        <arg name="robot_effector_frame" value="gripper_centor_link" />
+
+        <arg name="freehand_robot_movement" value="false" />
+        <arg name="robot_velocity_scaling" value="0.5" />
+        <arg name="robot_acceleration_scaling" value="0.2" />
+    </include>
+</launch>

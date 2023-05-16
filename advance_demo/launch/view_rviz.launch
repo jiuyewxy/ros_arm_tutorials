@@ -1,0 +1,3 @@
+<launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find advance_demo)/rviz/view_marker.rviz" />
+</launch>

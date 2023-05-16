@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+<xacro:macro name="arm_gazebo" params="name number">
+  <gazebo reference="${name}_${number}_link">
+    <mu1>0.9</mu1>
+    <mu2>0.9</mu2>
+    <material>Gazebo/White</material>
+  </gazebo>
+  <gazebo reference="${name}_${number}_joint">
+     <implicitSpringDamper>1</implicitSpringDamper>
+  </gazebo>
+</xacro:macro>
+
+
+</robot>

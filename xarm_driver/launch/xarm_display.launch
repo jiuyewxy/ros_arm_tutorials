@@ -1,0 +1,27 @@
+<launch>	
+    <arg name="xarm_port"        default="/dev/arm"  doc="used by create to configure the port it is connected on [/dev/ttyUSB0, /dev/ttyS0]"/>
+    <param name="/use_sim_time" value="false"/>
+    <arg name="port_baud"        default="1000000"  doc="used to set the baud" />
+    <node pkg="xarm_driver" type="arm_node" name="xarm" output="screen">
+      <param name="xarm_port" value="$(arg xarm_port)" />
+      <param name="port_baud" value="$(arg port_baud)" />
+      <param name="xarm_mode" value="1" />
+      <param name="log_path" value="$(find xarm_driver)" />
+    </node>
+
+  <include file="$(find xarm_description)/launch/xarm_load.launch">
+  </include>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <!-- param name="publish_frequency" type="double" value="50.0" / -->
+  </node>
+
+  <include file="$(find xarm_moveit_config)/launch/xarm_moveit_planning_execution.launch">
+  </include>
+
+  <include file="$(find xarm_pick_place)/launch/pick_place_server.launch">
+  </include>
+
+  <node pkg="xarm_pick_place" type="client_pick_place" name="pick_place_client">
+  </node>
+
+</launch>

@@ -1,0 +1,5 @@
+# On precise, for some reason, USER and GROUP are getting ignored.
+# So setting mode = 0666 for now.
+SUBSYSTEM=="tty",ATTRS{idVendor}=="0403",ATTRS{idProduct}=="6001",GROUP:="dialout",MODE:="0666",SYMLINK+="arm"
+# Bluetooth module (currently not supported and may have problems)
+# SUBSYSTEM=="tty", ATTRS{address}=="00:00:00:41:48:22", MODE:="0666", 
