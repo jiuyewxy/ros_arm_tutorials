@@ -67,6 +67,12 @@ catkin_make
 
 <img src="img/展示示例2.png" style="zoom:60%;" />
 
+## 购买链接
+本书已出版，购买链接如下：
+
+【淘宝】https://m.tb.cn/h.UEIyoaE?tk=exqfdMFff1C CZ3457 「ROS机械臂开发与实践」
+点击链接直接打开 或者 淘宝搜索直接打开
+
 ## 课后习题解析
 
 详见仓库: https://github.com/jiuyewxy/ros_arm_exercises
