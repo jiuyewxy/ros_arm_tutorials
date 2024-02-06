@@ -1,122 +1,71 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(base_demo)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-## Find catkin macros and libraries
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
-  geometry_msgs
-  message_generation
+# find dependencies
+find_package(ament_cmake REQUIRED)
+# uncomment the following section in order to fill in
+# further dependencies manually.
+# find_package(<dependency> REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/RobotInfo.msg"
+  "srv/SetTargetDetec.srv"
+  DEPENDENCIES std_msgs geometry_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
 )
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # comment the line when a copyright and license is added to all source files
+  set(ament_cmake_copyright_FOUND TRUE)
+  # the following line skips cpplint (only works in a git repo)
+  # comment the line when this package is in a git repo and when
+  # a copyright and license is added to all source files
+  set(ament_cmake_cpplint_FOUND TRUE)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
+set(dependencies "ament_index_cpp" "geometry_msgs" "rclcpp" "std_msgs" "std_srvs")
+rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
-################################################
-## Declare ROS messages, services and actions ##
-################################################
-
-## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  RobotInfo.msg
-)
-
-## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  SetTargetDetec.srv
-)
-
-
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  geometry_msgs 
-  std_msgs
-)
-
-###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES base_demo
- CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs message_runtime
-#  DEPENDS system_lib
-)
-
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
-
-
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
 add_executable(topic_pub src/topic_pub.cpp)
-target_link_libraries(topic_pub ${catkin_LIBRARIES})
-add_dependencies(topic_pub ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(topic_pub "${cpp_typesupport_target}")
+ament_target_dependencies(topic_pub "${dependencies}")
 
 add_executable(topic_sub src/topic_sub.cpp)
-target_link_libraries(topic_sub ${catkin_LIBRARIES})
-add_dependencies(topic_sub ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(topic_sub "${cpp_typesupport_target}")
+ament_target_dependencies(topic_sub "${dependencies}")    
 
 add_executable(service_server src/service_server.cpp)
-target_link_libraries(service_server ${catkin_LIBRARIES})
-add_dependencies(service_server ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(service_server "${cpp_typesupport_target}")
+ament_target_dependencies(service_server "${dependencies}")  
 
 add_executable(service_client src/service_client.cpp)
-target_link_libraries(service_client ${catkin_LIBRARIES})
-add_dependencies(service_client ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(service_client "${cpp_typesupport_target}")
+ament_target_dependencies(service_client "${dependencies}")  
 
 add_executable(param_demo src/param_demo.cpp)
-target_link_libraries(param_demo ${catkin_LIBRARIES})
-add_dependencies(param_demo ${PROJECT_NAME}_generate_messages_cpp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(param_demo "${cpp_typesupport_target}")
+ament_target_dependencies(param_demo "${dependencies}")  
+
+install(TARGETS topic_pub topic_sub service_server service_client param_demo
+  DESTINATION lib/${PROJECT_NAME})
 
 
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
-
-## Mark executable scripts (Python etc.) for installation
-catkin_install_python(PROGRAMS
-  scripts/topic_pub.py scripts/topic_sub.py scripts/service_server.py scripts/service_client.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-catkin_install_python(PROGRAMS
-  scripts/param_demo.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# Install Python executables
+install(PROGRAMS
+  scripts/topic_pub.py scripts/topic_sub.py scripts/service_server.py scripts/service_client.py scripts/param_demo.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 
+ament_package()

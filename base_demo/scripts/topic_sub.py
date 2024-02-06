@@ -1,28 +1,49 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import rospy
+import rclpy
+from rclpy.node import Node
 from base_demo.msg import RobotInfo
-# 接收到消息后,进入该回调函数
-def callback(data):
-    if data.pose.position.x == 20:
-        rospy.loginfo('The robot has reached the target pose.')
-        if data.is_carry:
-            rospy.loginfo('The robot is carrying objects')
-        else:
-            rospy.loginfo('The robot is not carrying objects')
-    else:
-         rospy.loginfo(data.state)
-         rospy.loginfo('Robot pose x : %.2fm; y : %.2fm; z : %.2fm', data.pose.position.x, data.pose.position.y, data.pose.position.z)
 
-def listener():
-    # 初始化节点
-    rospy.init_node('topic_sub', anonymous=True)
-    # 打印输出日志消息
-    rospy.loginfo('topic_sub node is Ready!')
-    # 创建/robot_info话题的订阅端,话题的回调处理函数为callback
-    rospy.Subscriber('/robot_info', RobotInfo, callback)
-    # 循环等待回调函数
-    rospy.spin()
+
+class TopicSubscriber(Node):
+
+    def __init__(self):
+        super().__init__('topic_subscriber')
+        self.get_logger().info('topic_sub python node is Ready!')
+
+        self.subscription = self.create_subscription(
+            RobotInfo,
+            'robot_info',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, data):
+        if data.pose.position.x == 20:
+            self.get_logger().info('The robot has reached the target pose.')
+            if data.is_carry:
+                self.get_logger().info('The robot is carrying objects')
+            else:
+                self.get_logger().info('The robot is not carrying objects')
+        else:
+            self.get_logger().info(data.state)
+            self.get_logger().info('Robot pose x : %.2fm' %data.pose.position.x )
+
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    topic_subscriber = TopicSubscriber()
+
+    rclpy.spin(topic_subscriber)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    topic_subscriber.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    listener()
+    main()
+

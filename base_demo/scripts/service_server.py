@@ -1,30 +1,35 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import rospy
-from base_demo.srv import SetTargetDetec, SetTargetDetecResponse
-# 服务的回调处理函数,req为服务的请求
-def target_detection_handle(req):
-    # 打印输出req.name
-    rospy.loginfo('Target object is ' + req.name)
-    rospy.loginfo('Find ' + req.name + ' and response.')
-    # 定义应答SetTargetDetecResponse的对象res
-    res = SetTargetDetecResponse()
-    # 对res的成员进行赋值
-    res.success = True
-    res.pose.position.x = 0.35
-    res.pose.position.y = -0.35
-    res.pose.position.z = 0.1
-    res.pose.orientation.w = 1
-    # return语句返回应答
-    return res
+import rclpy
+from rclpy.node import Node
+from base_demo.srv import SetTargetDetec
 
-def server():
-    # 初始化节点
-    rospy.init_node('service_server')
-    # 创建target_detection服务的服务端server,服务类型SetTargetDetec,服务回调函数target_detection_handle
-    server = rospy.Service('target_detection', SetTargetDetec, target_detection_handle)
-    rospy.loginfo('Service server is Ready!')
-    rospy.spin()
+class MinimalService(Node):
+
+    def __init__(self):
+        super().__init__('service_server')
+        self.get_logger().info('service_server python node is Ready!')
+        self.srv = self.create_service(SetTargetDetec, 'target_detection', self.target_detection_handle)
+
+    def target_detection_handle(self, request, response):
+        # 打印输出req.name
+        self.get_logger().info('Target object is ' + request.name)
+        self.get_logger().info('Find ' + request.name + ' and response.')
+        # 对res的成员进行赋值
+        response.success = True
+        response.pose.position.x = 0.35
+        response.pose.position.y = -0.35
+        response.pose.position.z = 0.1
+        response.pose.orientation.w = 1.0
+        return response
+
+
+def main():
+    rclpy.init()
+    minimal_service = MinimalService()
+    rclpy.spin(minimal_service)
+    rclpy.shutdown()
+
 
 if __name__ == '__main__':
-    server()
+    main()

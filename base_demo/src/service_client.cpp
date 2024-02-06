@@ -1,29 +1,47 @@
-#include "ros/ros.h"
-#include "base_demo/SetTargetDetec.h"
+#include "rclcpp/rclcpp.hpp"
+#include "base_demo/srv/set_target_detec.hpp"
+#include <chrono>
+#include <cstdlib>
+#include <memory>
+
+using namespace std::chrono_literals;
 
 int main(int argc, char **argv){
   // 初始化ROS节点
-  ros::init(argc, argv, "service_client");
-  ROS_INFO("service_client node is Ready!");
-  // 创建一个节点句柄（NodeHandle）对象nh
-  ros::NodeHandle nh;
-  // target_detection服务的服务端启动前，服务的调用一直处于阻塞状态
-  ros::service::waitForService("target_detection");
-  // 创建target_detection服务的客户端对象client
-  ros::ServiceClient client = nh.serviceClient<base_demo::SetTargetDetec>("target_detection");
-  // 定义服务类型的对象srv,为srv的请求数据成员赋值
-  base_demo::SetTargetDetec srv;
-  srv.request.name = "box";
-  // 调用服务,若服务调用成功,call()返回true,服务的应答数据将保存到srv的response中
-  if(client.call(srv)){
-    if(srv.response.success){
-      ROS_INFO("Target detection succeeded!");
-      ROS_INFO_STREAM(srv.response.pose);
-    }else{
-      ROS_INFO("Can not find the target!");
+  rclcpp::init(argc, argv);
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service_client node is Ready!");
+  
+  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("service_client");
+
+  rclcpp::Client<base_demo::srv::SetTargetDetec>::SharedPtr client =
+    node->create_client<base_demo::srv::SetTargetDetec>("target_detection");
+  auto request = std::make_shared<base_demo::srv::SetTargetDetec::Request>();
+  request->name = "box";
+
+  while (!client->wait_for_service(1s)) {
+    if (!rclcpp::ok()) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+      return 0;
     }
-  }else{
-    ROS_ERROR("Failed to call service target_detection");
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
   }
+
+  auto result = client->async_send_request(request);
+  // Wait for the result.
+  if (rclcpp::spin_until_future_complete(node, result) ==
+    rclcpp::FutureReturnCode::SUCCESS)
+  {
+    auto res = result.get();
+    if(res->success){
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Target detection succeeded!");
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Robot pose x : %.2fm; y : %.2fm; z : %.2fm", res->pose.position.x, res->pose.position.y, res->pose.position.z);
+    }else{
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Can not find the target!");
+    }
+  } else {
+    RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to call service target_detection");
+  }
+
+  rclcpp::shutdown();
   return 0;
 }

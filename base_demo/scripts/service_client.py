@@ -1,32 +1,43 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import rospy
-from base_demo.srv import *
+import rclpy
+from rclpy.node import Node
+from base_demo.srv import SetTargetDetec
 
-def client():
-    # 初始化节点
-    rospy.init_node('service_client')
-    rospy.loginfo('service_client node is Ready!')
-    # 在target_detection服务的服务端启动前,服务的调用一直处于阻塞状态
-    rospy.wait_for_service("target_detection")
-    # 创建对象client用来调用target_detection服务
-    client = rospy.ServiceProxy('target_detection', SetTargetDetec)
-    try:
-        # 服务调用的其他形式
-        #req = SetTargetDetecRequest()
-        #req.name = 'box'
-        #res = client(req)
-        #res = client(name='box')
 
-        # 进行服务调用,res保存服务端返回的应答数据
-        res = client('box')
-        if res.success:
-            rospy.loginfo('Target detection succeeded!')
-            rospy.loginfo(res.pose)
-        else:
-            rospy.loginfo('Can not find the target!')
-    except rospy.ServiceException as e:
-        rospy.logerr("Service call failed: %s"%e)
+class MinimalClientAsync(Node):
+
+    def __init__(self):
+        super().__init__('service_client')
+        self.cli = self.create_client(SetTargetDetec, 'target_detection')
+        while not self.cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
+        self.req = SetTargetDetec.Request()
+
+    def send_request(self):
+        self.req.name = "box"
+        self.future = self.cli.call_async(self.req)
+        rclpy.spin_until_future_complete(self, self.future)
+        return self.future.result()
+
+
+def main():
+    rclpy.init()
+    minimal_client = MinimalClientAsync()
+    response = minimal_client.send_request()
+    if response.success:
+        minimal_client.get_logger().info('Target detection succeeded!')
+        minimal_client.get_logger().info('Pose: x = %f ,y= %f, z= %f' 
+        %(response.pose.position.x,response.pose.position.y,response.pose.position.z))
+    else:
+        minimal_client.get_logger().info('Can not find the target!')
+
+    minimal_client.destroy_node()
+    rclpy.shutdown()
+
 
 if __name__ == '__main__':
-    client()
+    main()
+
+
+

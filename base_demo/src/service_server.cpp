@@ -1,27 +1,30 @@
-#include "ros/ros.h"
-#include "base_demo/SetTargetDetec.h"
+#include "rclcpp/rclcpp.hpp"
+#include "base_demo/srv/set_target_detec.hpp"
+
 // 服务回调函数,req为服务的请求,res为服务的应答
-bool targetDetectionHandle(base_demo::SetTargetDetec::Request &req, base_demo::SetTargetDetec::Response &res){
+void targetDetectionHandle(const std::shared_ptr<base_demo::srv::SetTargetDetec::Request> req,
+          std::shared_ptr<base_demo::srv::SetTargetDetec::Response>   res){
   // 打印输出req.name
-  ROS_INFO_STREAM("Target object is " << req.name);
-  ROS_INFO_STREAM("Find " << req.name << " and response.");
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("rclcpp"),"Target object is " << req->name);
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("rclcpp"),"Find " << req->name << " and response.");
   // 对res的成员进行赋值并返回应答
-  res.success = true;
-  res.pose.position.x = 0.35;
-  res.pose.position.y = -0.35;
-  res.pose.position.z = 0.1;
-  res.pose.orientation.w = 1;
-  return true;
+  res->success = true;
+  res->pose.position.x = 0.35;
+  res->pose.position.y = -0.35;
+  res->pose.position.z = 0.1;
+  res->pose.orientation.w = 1;
 }
 
 int main(int argc, char **argv){
   // 初始化ROS节点
-  ros::init(argc, argv, "service_server");
-  // 创建一个节点句柄（NodeHandle）对象nh
-  ros::NodeHandle nh;
-  // 创建target_detection服务的服务端对象service,服务回调函数targetDetectionHandle
-  ros::ServiceServer service = nh.advertiseService("target_detection", targetDetectionHandle);
-  ROS_INFO("Service server is Ready!");
-  ros::spin();
-  return 0;
+  rclcpp::init(argc, argv);
+  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("service_server");
+
+  rclcpp::Service<base_demo::srv::SetTargetDetec>::SharedPtr service =
+    node->create_service<base_demo::srv::SetTargetDetec>("target_detection", &targetDetectionHandle);
+
+  RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Service server is Ready!");
+
+  rclcpp::spin(node);
+  rclcpp::shutdown();
 }

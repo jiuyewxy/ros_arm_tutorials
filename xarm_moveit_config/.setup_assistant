@@ -1,11 +1,25 @@
 moveit_setup_assistant_config:
-  URDF:
+  urdf:
     package: xarm_description
     relative_path: urdf/xarm.urdf.xacro
-    xacro_args: ""
-  SRDF:
+  srdf:
     relative_path: config/xarm.srdf
-  CONFIG:
-    author_name: Xiaoyun Wang
+  package_settings:
+    author_name: wangxiaoyun
     author_email: wangxiaoyun@iscas.ac.cn
-    generated_timestamp: 1640173795
+    generated_timestamp: 1705042265
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

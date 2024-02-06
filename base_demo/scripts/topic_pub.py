@@ -1,48 +1,59 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import rospy
+import rclpy
+from rclpy.node import Node
 from base_demo.msg import RobotInfo
 
-def talker():
-    # 初始化节点
-    rospy.init_node('topic_pub', anonymous=False)
-    # 打印输出日志消息
-    rospy.loginfo('topic_pub node is Ready!')
-    # 创建发布RobotInfo消息到话题/robot_info的句柄(发布端)pub
-    pub = rospy.Publisher('/robot_info', RobotInfo, queue_size=10)
-    # 创建了RobotInfo消息的对象msg,并赋值
-    msg = RobotInfo()
-    msg.is_carry = False
-    msg.header.frame_id = 'map'
-    msg.pose.position.x = 0
-    msg.pose.position.y = 0
-    msg.pose.position.z = 0
-    msg.pose.orientation.w = 1
-    # 创建rate对象,设置频率为5Hz,用于循环发布
-    rate = rospy.Rate(5)
-    # 节点关闭前一直循环发布消息
-    while not rospy.is_shutdown():
-        # 设置state并改变msg中机器人在X方向上的位置
-        msg.state = 'Robot is moving...'
-        if msg.pose.position.x == 0:
-            go_flag = True
-        if msg.pose.position.x == 20:
-            go_flag = False
-        if go_flag:
-            msg.pose.position.x += 0.5
+
+class TopicPublisher(Node):
+
+    def __init__(self):
+        super().__init__('topic_pub')
+        self.get_logger().info('topic_pub python node is Ready!')
+        self.publisher_ = self.create_publisher(RobotInfo, 'robot_info', 10)
+
+        self.msg = RobotInfo()
+        self.msg.is_carry = False
+        self.msg.header.frame_id = 'map'
+        self.msg.pose.position.x = 0.0
+        self.msg.pose.position.y = 0.0
+        self.msg.pose.position.z = 0.0
+        self.msg.pose.orientation.w = 1.0
+        self.go_flag = True
+        timer_period = 0.2  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        
+
+    def timer_callback(self):
+        self.msg.state = 'Robot is moving...'
+        if self.msg.pose.position.x == 0:
+            self.go_flag = True
+        if self.msg.pose.position.x == 20:
+            self.go_flag = False
+        if self.go_flag:
+            self.msg.pose.position.x += 0.5
         else:
-            msg.pose.position.x -= 0.5
-        # header的时间戳为当前时间
-        msg.header.stamp = rospy.Time.now()
-        # 打印输出机器人X方向的位置
-        rospy.loginfo('Robot pose x : %.1fm', msg.pose.position.x)
-        # 发布消息
-        pub.publish(msg)
-        # 按照循环频率延时
-        rate.sleep()
+            self.msg.pose.position.x -= 0.5
+
+        self.get_logger().info('Robot pose x : %.1fm' %self.msg.pose.position.x)
+        self.publisher_.publish(self.msg)
+
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    topic_publisher = TopicPublisher()
+    rclpy.spin(topic_publisher)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    topic_publisher.destroy_node()
+    rclpy.shutdown()
+
 
 if __name__ == '__main__':
-    talker()
+    main()
 
 
 
