@@ -25,7 +25,7 @@ void makeGrasps(std::vector<moveit_msgs::Grasp>& grasps){
   grasps.resize(1);
   // 设置抓取的位姿grasp_pose
   grasps[0].grasp_pose.header.frame_id = BASE_LINK;
-  grasps[0].grasp_pose.pose.position.x = 0.47;
+  grasps[0].grasp_pose.pose.position.x = 0.48;
   grasps[0].grasp_pose.pose.position.y = 0;
   grasps[0].grasp_pose.pose.position.z = 0.14;
   tf2::Quaternion orientation;
@@ -105,7 +105,7 @@ void addCollisionObjects(moveit::planning_interface::PlanningSceneInterface& pla
   collision_objects[1].primitives[0].dimensions[2] = 0.22;
 
   collision_objects[1].primitive_poses.resize(1);
-  collision_objects[1].primitive_poses[0].position.x = 0.47;
+  collision_objects[1].primitive_poses[0].position.x = 0.48;
   collision_objects[1].primitive_poses[0].position.y = 0.0;
   collision_objects[1].primitive_poses[0].position.z = 0.11;
   collision_objects[1].primitive_poses[0].orientation.w = 1;

@@ -123,7 +123,7 @@ class MoveItPickPlaceDemo:
         # 设置目标的位姿，让目标物体位于桌子上
         target_pose = PoseStamped()
         target_pose.header.frame_id = BASE_LINK
-        target_pose.pose.position.x = 0.47
+        target_pose.pose.position.x = 0.48
         target_pose.pose.position.y = 0.0
         target_pose.pose.position.z =  target_size[2] / 2.0
         target_pose.pose.orientation.w = 1.0
@@ -139,7 +139,7 @@ class MoveItPickPlaceDemo:
         grasp = Grasp()
         # 设置抓取的位姿grasp_pose
         grasp.grasp_pose.header.frame_id = BASE_LINK
-        grasp.grasp_pose.pose.position.x = 0.47
+        grasp.grasp_pose.pose.position.x = 0.48
         grasp.grasp_pose.pose.position.y = 0
         grasp.grasp_pose.pose.position.z = 0.14
         q = quaternion_from_euler(0, 0, 0)
