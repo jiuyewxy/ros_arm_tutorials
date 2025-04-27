@@ -76,9 +76,35 @@ ament_target_dependencies(
   "moveit_task_constructor_core"
 )
 
+add_executable(moveit_beeline_demo src/moveit_beeline_demo.cpp)
+target_include_directories(moveit_beeline_demo PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(moveit_beeline_demo PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+    moveit_beeline_demo
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "tf2"
+  "moveit_task_constructor_core"
+)
 
+add_executable(moveit_arcline_demo src/moveit_arcline_demo.cpp)
+target_include_directories(moveit_arcline_demo PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_features(moveit_arcline_demo PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+    moveit_arcline_demo
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "tf2"
+  "moveit_task_constructor_core"
+)
 
 install(TARGETS hello_moveit moveit_pose_demo moveit_joint_pose_demo moveit_planning_scene_demo moveit_pick_place_demo
+  moveit_beeline_demo
+  moveit_arcline_demo
   DESTINATION lib/${PROJECT_NAME})
 
 # Install launch files.
